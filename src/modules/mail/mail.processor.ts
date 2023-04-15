@@ -13,5 +13,4 @@ export class MailProcessor {
     private readonly userService: UserService,
     private readonly logger: Logger,
   ) {}
-
 }

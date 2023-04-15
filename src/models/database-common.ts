@@ -2,9 +2,7 @@ import { Global, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserRepository } from 'src/models/repositories/user.repository';
 
-const commonRepositories = [
-  UserRepository,
-];
+const commonRepositories = [UserRepository];
 
 @Global()
 @Module({
@@ -14,4 +12,4 @@ const commonRepositories = [
   ],
   exports: [TypeOrmModule],
 })
-export class DatabaseCommonModule { }
+export class DatabaseCommonModule {}

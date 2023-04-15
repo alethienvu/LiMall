@@ -19,14 +19,14 @@ export class AuthController {
     private readonly authService: AuthService,
     private readonly userService: UserService,
     private readonly mailService: MailService,
-  ) { }
+  ) {}
 
   @Get('/current')
   @UseGuards(JwtAuthGuard)
   async currentUser(@UserID() userId: number): Promise<ResponseDto<UserEntity>> {
     const user = await this.userService.findUserById(userId);
     return {
-      data: user
+      data: user,
     };
   }
 
@@ -46,5 +46,4 @@ export class AuthController {
       data: await this.authService.refreshAccessToken(refreshAccessTokenDto),
     };
   }
-
 }

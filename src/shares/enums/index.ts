@@ -1,1 +1,1 @@
-export * as OrderEnums from 'src/shares/enums/order.enum';
+export * as UserEnums from 'src/shares/enums/user.enum';

@@ -1,5 +1,5 @@
 export const formatNumber = (number: string | undefined, precision: number, zeroValue: string): string => {
-  if (number === undefined || number === null || number === '' || Number(number) == NaN) {
+  if (number === undefined || number === null || number === '' || Number.isNaN(Number(number))) {
     return zeroValue;
   }
   return Number(number)

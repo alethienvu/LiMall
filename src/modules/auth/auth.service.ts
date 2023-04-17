@@ -31,10 +31,11 @@ export class AuthService {
 
     const accessToken = this.generateAccessToken({ userId: user.id });
     const refreshToken = await this.generateRefreshToken(accessToken.accessToken);
-    const { email, role } = user;
+    const { email, role, id } = user;
     const res: ResponseLogin = {
       ...accessToken,
       ...refreshToken,
+      id,
       email,
       role,
     };

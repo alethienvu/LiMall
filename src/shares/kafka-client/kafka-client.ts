@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { serialize } from 'class-transformer';
+import { instanceToPlain } from 'class-transformer';
 import { Consumer, EachMessagePayload, Producer, RecordMetadata } from 'kafkajs';
 import { kafka } from 'src/configs/kafka';
 
@@ -23,7 +23,7 @@ export class KafkaClient {
       topic: topic,
       messages: [
         {
-          value: serialize(data),
+          value: JSON.stringify(instanceToPlain(data)),
         },
       ],
     });

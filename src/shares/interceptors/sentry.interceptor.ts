@@ -17,10 +17,10 @@ export class SentryInterceptor implements NestInterceptor {
       catchError((err) => {
         console.log(err);
         if (err instanceof HttpException) {
-          return throwError(err);
+          return throwError(() => err);
         }
         Sentry.captureException(err);
-        return throwError(new InternalServerErrorException(`Sorry, we're having temporary server issues`));
+        return throwError(() => new InternalServerErrorException(`Sorry, we're having temporary server issues`));
       }),
     );
   }

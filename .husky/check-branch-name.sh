@@ -5,12 +5,12 @@ develop_branch='develop'
 
 message="Denied commit and push to master/develop branch. Please use check out and create merge request"
 
-if [[ $local_branch_name =~ $develop_branch ]]; then
-  echo "*****************************"
-  echo "$message"
-  echo "*****************************"
-  exit 1
-fi
+# if [[ $local_branch_name =~ $develop_branch ]]; then
+#   echo "*****************************"
+#   echo "$message"
+#   echo "*****************************"
+#   exit 1
+# fi
 
 master_branch='master'
 

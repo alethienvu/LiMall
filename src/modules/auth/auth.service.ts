@@ -24,20 +24,21 @@ export class AuthService {
     let user: UserEntity;
 
     if (!(await this.userService.checkUserEmailAddressExisted(loginDto.email))) {
-      const newUserDto: { email; password } = loginDto;
-      user = await this.userService.createUser(newUserDto);
+      throw new HttpException(httpErrors.ACCOUNT_EXISTED, HttpStatus.UNAUTHORIZED);
     } else {
       user = await this.userService.findUserByEmailAddress(loginDto.email);
     }
 
     const accessToken = this.generateAccessToken({ userId: user.id });
     const refreshToken = await this.generateRefreshToken(accessToken.accessToken);
-
-    return {
+    const { email, role } = user;
+    const res: ResponseLogin = {
       ...accessToken,
       ...refreshToken,
-      ...user,
+      email,
+      role,
     };
+    return res;
   }
 
   async refreshAccessToken(refreshAccessTokenDto: RefreshAccessTokenDto): Promise<ResponseLogin> {

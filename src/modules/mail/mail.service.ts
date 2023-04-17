@@ -13,9 +13,7 @@ export class MailService {
   public static WAIT_PREFIX = 'MAIL_WAIT_';
   public static WAIT_TTL = 60; // 1 minutes
 
-  constructor(
-    @InjectQueue('mail') private readonly emailQueue: Queue,
-  ) { }
+  constructor(@InjectQueue('mail') private readonly emailQueue: Queue) {}
 
   async sendTestEmail(email: string, subject: string, content: string): Promise<void> {
     const testMailDto: TestMailDto = { email, subject, content };
@@ -23,5 +21,4 @@ export class MailService {
       ...testMailDto,
     });
   }
-
 }

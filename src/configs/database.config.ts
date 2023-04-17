@@ -11,7 +11,8 @@ export interface DatabaseConfig {
   logging: boolean;
 }
 
-export const masterConfig = { // write database master
+export const masterConfig = {
+  // write database master
   ...getConfig().get<DatabaseConfig>('master'),
   name: 'master',
   entities: [__dirname + '/../models/entities/**/*{.ts,.js}'],
@@ -19,7 +20,8 @@ export const masterConfig = { // write database master
   loading: true,
 };
 
-export const reportConfig = { // read database slave
+export const reportConfig = {
+  // read database slave
   ...getConfig().get<DatabaseConfig>('report'),
   name: 'report',
   entities: [__dirname + '/../models/entities/**/*{.ts,.js}'],

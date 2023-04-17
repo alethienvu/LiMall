@@ -6,4 +6,3 @@ export const formatNumber = (number: string | undefined, precision: number, zero
     .toFixed(precision)
     .replace(/\d(?=(\d{3})+\.)/g, '$&,');
 };
-

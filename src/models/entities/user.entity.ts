@@ -1,4 +1,4 @@
-import { Expose, Transform } from 'class-transformer';
+import { Exclude, Expose, Transform } from 'class-transformer';
 import { dateTransformer } from 'src/shares/helpers/transformer';
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
@@ -18,6 +18,7 @@ export class UserEntity {
   @Column({
     nullable: false,
   })
+  @Exclude()
   password: string;
 
   @Column()
@@ -27,19 +28,21 @@ export class UserEntity {
   @Column({
     nullable: true,
   })
+  @Expose()
   first_name: string;
 
   @Column({
     nullable: true,
   })
+  @Expose()
   last_name: string;
 
-  @Column()
-  @Expose()
+  @Column({
+    nullable: false,
+  })
   role: string;
 
   @Column()
-  @Expose()
   status: string;
 
   @CreateDateColumn()

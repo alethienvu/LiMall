@@ -10,8 +10,6 @@ import { UpdateUserDto } from './type/updateUser.dto';
 
 @Injectable()
 export class UserService {
-  private web3;
-
   constructor(
     @InjectRepository(UserRepository, 'master') private usersRepositoryMaster: UserRepository,
     @InjectRepository(UserRepository, 'report') private usersRepositoryReport: UserRepository,
@@ -72,9 +70,9 @@ export class UserService {
     }
 
     const newUser = await transactionRepositoryUser.save({
-      role: UserRole.USER,
       email,
       password,
+      role: UserRole.USER,
     });
 
     return newUser;

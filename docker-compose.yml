@@ -2,12 +2,12 @@ version: '3'
 services:
   mysql:
     image: mysql:8.0.25
-    container_name: app-name-mysql
+    container_name: limall-mysql
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --sql_mode="" --default-authentication-plugin=mysql_native_password
     environment:
       MYSQL_ROOT_PASSWORD: '1'
-      MYSQL_DATABASE: app-name
-      MYSQL_USER: 'app-name'
+      MYSQL_DATABASE: limall
+      MYSQL_USER: 'limall'
       MYSQL_PASSWORD: '1'
       LANG: C.UTF-8
     ports:
@@ -15,13 +15,13 @@ services:
 
   redis:
     image: 'redis:6-alpine'
-    container_name: app-name-redis
+    container_name: limall-redis
     ports:
       - 6382:6379
 
   zookeeper:
     image: 'bitnami/zookeeper:3.6.2'
-    container_name: app-name-zookeeper
+    container_name: limall-zookeeper
     ports:
       - 2190:2181
     environment:
@@ -29,7 +29,7 @@ services:
 
   kafka:
     image: 'bitnami/kafka:2.6.0'
-    container_name: app-name-kafka
+    container_name: limall-kafka
     ports:
       - 9100:9100
     environment:
@@ -46,7 +46,7 @@ services:
 
   kafdrop:
     image: obsidiandynamics/kafdrop
-    container_name: app-name-kafdrop
+    container_name: limall-kafdrop
     restart: "no"
     ports:
       - "9001:9000"

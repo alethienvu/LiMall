@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from 'src/models/entities/user.entity';
 import { UserRepository } from 'src/models/repositories/user.repository';
@@ -7,13 +7,15 @@ import { UserRole } from 'src/shares/enums/user.enum';
 import { httpErrors } from 'src/shares/exceptions';
 import { Repository, Transaction, TransactionRepository } from 'typeorm';
 import { UpdateUserDto } from './type/updateUser.dto';
-// import { MailService } from 'src/modules/mail/mail.service';
+import { MailService } from 'src/modules/mail/mail.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserRepository, 'master') private usersRepositoryMaster: UserRepository,
-    @InjectRepository(UserRepository, 'report') private usersRepositoryReport: UserRepository, // private readonly mailService: MailService,
+    @InjectRepository(UserRepository, 'report') private usersRepositoryReport: UserRepository,
+    @Inject(forwardRef(() => MailService))
+    private readonly mailService: MailService,
   ) {}
 
   async checkUserIdExisted(id: number): Promise<boolean> {
@@ -75,7 +77,7 @@ export class UserService {
       password,
       role: UserRole.USER,
     });
-    // this.mailService.sendMail(newUser.email, 'Sign up successfully!', 'You signed up to LiMall');
+    this.mailService.sendMail(newUser.email, 'Sign up successfully!', 'You signed up to LiMall');
 
     return newUser;
   }

@@ -1,7 +1,7 @@
-# mineraland-backend
+# Nestjs-backend
 
 ## Description
-mineraland backend
+Nestjs backend
 
 ## Running the app in the first time
 ### Remember install docker, docker-compose before run command below:

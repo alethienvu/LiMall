@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from 'src/models/entities/user.entity';
 import { UserRepository } from 'src/models/repositories/user.repository';
@@ -7,17 +7,22 @@ import { UserRole } from 'src/shares/enums/user.enum';
 import { httpErrors } from 'src/shares/exceptions';
 import { Repository, Transaction, TransactionRepository } from 'typeorm';
 import { UpdateUserDto } from './type/updateUser.dto';
+import { MailService } from 'src/modules/mail/mail.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserRepository, 'master') private usersRepositoryMaster: UserRepository,
     @InjectRepository(UserRepository, 'report') private usersRepositoryReport: UserRepository,
+    @Inject(forwardRef(() => MailService))
+    private readonly mailService: MailService,
   ) {}
 
   async checkUserIdExisted(id: number): Promise<boolean> {
     const user = await this.usersRepositoryReport.findOne({
-      id: id,
+      where: {
+        id: id,
+      },
     });
     if (user) return true;
     else return false;
@@ -63,22 +68,21 @@ export class UserService {
     @TransactionRepository(UserEntity) transactionRepositoryUser?: Repository<UserEntity>,
   ): Promise<UserEntity> {
     const { email, password } = createUserDto;
-
     const sameEmailAddress = await this.checkUserEmailAddressExisted(email);
     if (!!sameEmailAddress) {
       throw new HttpException(httpErrors.ACCOUNT_EXISTED, HttpStatus.BAD_REQUEST);
     }
-
     const newUser = await transactionRepositoryUser.save({
       email,
       password,
       role: UserRole.USER,
     });
-
+    this.mailService.sendMail(newUser.email, 'Sign up successfully!', 'You signed up to LiMall');
     return newUser;
   }
 
-  async updateUser(currentUser: UserEntity, updateUser: UpdateUserDto): Promise<UserEntity> {
+  async updateUser(id: number, updateUser: UpdateUserDto): Promise<UserEntity> {
+    const currentUser = await this.findUserById(id);
     if (updateUser.address) {
       currentUser.address = updateUser.address;
     }

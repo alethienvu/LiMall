@@ -1,4 +1,4 @@
-import { Body, Controller, HttpException, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, HttpException, HttpStatus, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UserEntity } from 'src/models/entities/user.entity';
 import { MailService } from 'src/modules/mail/mail.service';
@@ -7,9 +7,11 @@ import { httpErrors } from 'src/shares/exceptions';
 import { CreateUserDto } from './type/createUser.dto';
 import * as crypto from 'crypto';
 import { ResponseDto } from 'src/shares/dtos/response.dto';
+import { UpdateUserDto } from './type/updateUser.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('user')
-@ApiBearerAuth('access-token')
+@ApiBearerAuth()
 @ApiTags('User')
 export class UserController {
   constructor(private userService: UserService, private readonly mailService: MailService) {}
@@ -39,6 +41,20 @@ export class UserController {
     await this.userService.createUser(user);
     return {
       data: 'Created',
+    };
+  }
+
+  @Put('/update/:id')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({
+    operationId: 'update',
+    description: 'Update',
+    summary: 'Update',
+  })
+  async updateUser(@Param('id') id: number, @Body() updateUser: UpdateUserDto): Promise<ResponseDto<string>> {
+    await this.userService.updateUser(id, updateUser);
+    return {
+      data: 'Updated',
     };
   }
 }

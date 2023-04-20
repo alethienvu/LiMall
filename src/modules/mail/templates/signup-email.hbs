@@ -14,8 +14,7 @@
 
   <style>
     body {
-      width: 668px;
-      height: 536px;
+      width: 100%;
       margin: 0;
       line-height: 28px;
       font-family: 'Roboto';
@@ -40,7 +39,7 @@
 
     .sotadex-img {
       width: 100%;
-      max-height: 200px;
+      max-height: auto;
     }
 
     p {
@@ -68,15 +67,15 @@
 
 <body>
 
-<header><img class="sotadex-img" src="{{ bannerLink }}" /></header>
-<div class="email-content">
-  <h3 class="title">Confirm Your Registration</h3>
-  <p>Welcome to SotaDex!</p>
-  <p>Email: {{email}}</p>
-  <p>
-    Test content: {{content}}
-  </p>
-</div>
+  <header><img class="sotadex-img" src="{{ bannerLink }}" /></header>
+  <div class="email-content">
+    <h3 class="title">Confirm Your Registration</h3>
+    <p>Welcome to LiMall!</p>
+    <p>Email: {{email}}</p>
+    <p>
+      {{content}}
+    </p>
+  </div>
 </body>
 
 </html>

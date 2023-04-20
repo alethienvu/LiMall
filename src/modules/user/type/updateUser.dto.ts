@@ -17,3 +17,13 @@ export class UpdateUserDto {
   @ApiProperty()
   readonly last_name?: string;
 }
+
+export class UpdatePassWordDto {
+  @IsString()
+  @ApiProperty({ required: true })
+  readonly currently_pass: string;
+
+  @IsString()
+  @ApiProperty({ required: true })
+  readonly new_pass: string;
+}

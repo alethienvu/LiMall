@@ -7,7 +7,7 @@ import { httpErrors } from 'src/shares/exceptions';
 import { CreateUserDto } from './type/createUser.dto';
 import * as crypto from 'crypto';
 import { ResponseDto } from 'src/shares/dtos/response.dto';
-import { UpdateUserDto } from './type/updateUser.dto';
+import { UpdatePassWordDto, UpdateUserDto } from './type/updateUser.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('user')
@@ -53,6 +53,23 @@ export class UserController {
   })
   async updateUser(@Param('id') id: number, @Body() updateUser: UpdateUserDto): Promise<ResponseDto<string>> {
     await this.userService.updateUser(id, updateUser);
+    return {
+      data: 'Updated',
+    };
+  }
+
+  @Put('/change-password/:id')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({
+    operationId: 'change-password',
+    description: 'Change password',
+    summary: 'Change password',
+  })
+  async changePass(
+    @Param('id') id: number,
+    @Body() changePassWordDto: UpdatePassWordDto,
+  ): Promise<ResponseDto<string>> {
+    await this.userService.changePassWord(id, changePassWordDto);
     return {
       data: 'Updated',
     };

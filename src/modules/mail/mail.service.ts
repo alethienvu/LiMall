@@ -23,7 +23,7 @@ export class MailService {
       from: mailConfig.from,
       to: email,
       subject: subject,
-      template: 'src/modules/mail/templates/test-email.hbs',
+      template: 'src/modules/mail/templates/signup-email.hbs',
       context: {
         email: email,
         content: body,

@@ -29,7 +29,7 @@ export class AuthService {
       user = await this.userService.findUserByEmailAddress(loginDto.email);
     }
 
-    const accessToken = this.generateAccessToken({ userId: user.id });
+    const accessToken = this.generateAccessToken({ userId: user.id, role: user.role });
     const refreshToken = await this.generateRefreshToken(accessToken.accessToken);
     const { email, role, id } = user;
     const res: ResponseLogin = {

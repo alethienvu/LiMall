@@ -6,8 +6,9 @@ import { CreateUserDto } from 'src/modules/user/type/createUser.dto';
 import { UserRole } from 'src/shares/enums/user.enum';
 import { httpErrors } from 'src/shares/exceptions';
 import { Repository, Transaction, TransactionRepository } from 'typeorm';
-import { UpdateUserDto } from './type/updateUser.dto';
+import { UpdatePassWordDto, UpdateUserDto } from './type/updateUser.dto';
 import { MailService } from 'src/modules/mail/mail.service';
+import * as crypto from 'crypto';
 
 @Injectable()
 export class UserService {
@@ -77,7 +78,7 @@ export class UserService {
       password,
       role: UserRole.USER,
     });
-    this.mailService.sendMail(newUser.email, 'Sign up successfully!', 'You signed up to LiMall');
+    this.mailService.sendMail(newUser.email, 'Sign up to LiMall successfully!', 'You signed up to LiMall');
     return newUser;
   }
 
@@ -92,6 +93,17 @@ export class UserService {
     if (updateUser.last_name) {
       currentUser.last_name = updateUser.last_name;
     }
+    const updatedUser = await this.usersRepositoryMaster.save(currentUser);
+    return updatedUser;
+  }
+  async changePassWord(id: number, updatePassWordDto: UpdatePassWordDto): Promise<UserEntity> {
+    const currentUser = await this.findUserById(id);
+    const { currently_pass, new_pass } = updatePassWordDto;
+    const compare_pass = crypto.createHmac('sha256', currently_pass).digest('hex');
+    if (currentUser.password !== compare_pass) {
+      throw new HttpException(httpErrors.UNAUTHORIZED, HttpStatus.UNAUTHORIZED);
+    }
+    currentUser.password = crypto.createHmac('sha256', new_pass).digest('hex');
     const updatedUser = await this.usersRepositoryMaster.save(currentUser);
     return updatedUser;
   }

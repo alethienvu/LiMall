@@ -10,7 +10,6 @@ import { redisConfig } from 'src/configs/redis.config';
 import { MailConsole } from 'src/modules/mail/mail.console';
 import { MailProcessor } from 'src/modules/mail/mail.processor';
 import { MailService } from 'src/modules/mail/mail.service';
-// import { UserService } from 'src/modules/user/users.service';
 
 const bullOptions: BullModuleOptions = { name: 'mail' };
 const providers: Provider[] = [MailService, MailConsole, Logger];

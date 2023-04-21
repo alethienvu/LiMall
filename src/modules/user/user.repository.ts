@@ -9,14 +9,4 @@ export class UserRepository extends Repository<UserEntity> {
       return user[0];
     } else return null;
   }
-  async findUserByAccountId(accountId: number): Promise<UserEntity> {
-    const user = await this.createQueryBuilder('users')
-      .select('*')
-      .innerJoin('accounts', 'accounts', 'accounts.ownerId = users.id')
-      .where('accounts.id = :accountId', { accountId })
-      .execute();
-    if (user[0]) {
-      return user[0];
-    } else return null;
-  }
 }

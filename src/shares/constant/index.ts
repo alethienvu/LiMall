@@ -1,4 +1,4 @@
-export const httpErrors = {
+export const ERROR_MESSAGE_CODE = {
   // user error
   ACCOUNT_NOT_FOUND: {
     message: 'Account not found.',
@@ -38,18 +38,32 @@ export const httpErrors = {
   },
   USER_EMAIL_EXISTED: {
     message: 'Email has been associted with an other account.',
-    code: 'USER_00025',
+    code: 'USER_0009',
   },
   USER_EMAIL_VERIFY_FAIL: {
     message: 'Failed to verify this email.',
-    code: 'USER_00026',
+    code: 'USER_0010',
   },
-  EMAIL_CONFIRM_NOT_FOUND: {
-    message: 'Email request not found!',
-    code: 'USER_00027',
+  NO_RECORD_DELETED: {
+    message: 'Deleted 0 record',
+    code: '0011',
   },
-  EMAIL_WAIT_TIME: {
-    message: 'Too much request',
-    code: 'USER_00028',
+};
+export const SUCCESS_MESSAGE_CODE = {
+  UPDATED_SUCCESS: {
+    message: 'Updated Successfully',
+    code: 'Success_001',
+  },
+  DELETED_SUCCESS: {
+    message: 'Deleted Successfully',
+    code: 'Success_002',
+  },
+  CREATED_SUCCESS: {
+    message: 'Created Successfully',
+    code: 'Success_003',
+  },
+  CHANGED_PASS: {
+    message: 'Change Password Successfully, Please login again!!!',
+    code: 'success_005',
   },
 };

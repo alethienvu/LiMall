@@ -13,6 +13,7 @@ import { MailModule } from 'src/modules/mail/mail.module';
 import { UsersModule } from 'src/modules/user/users.module';
 import { HttpClientModule } from 'src/shares/http-clients/http.module';
 import { KafkaModule } from 'src/shares/kafka-client/kafka-module';
+import { AdminsModule } from './modules/admin/admins.module';
 
 const Modules = [
   Logger,
@@ -33,6 +34,7 @@ const Modules = [
   }),
   EventModule,
   AuthModule,
+  AdminsModule,
   UsersModule,
   MailModule,
 ];

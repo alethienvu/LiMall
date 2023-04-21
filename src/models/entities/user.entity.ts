@@ -1,4 +1,5 @@
 import { Exclude, Expose, Transform } from 'class-transformer';
+import { UserRole, UserStatus } from 'src/shares/enums/user.enum';
 import { dateTransformer } from 'src/shares/helpers/transformer';
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
@@ -39,11 +40,14 @@ export class UserEntity {
 
   @Column({
     nullable: false,
+    default: UserRole.USER,
   })
-  role: string;
+  role: UserRole;
 
-  @Column()
-  status: string;
+  @Column({
+    default: UserStatus.ACTIVE,
+  })
+  status: UserStatus;
 
   @CreateDateColumn()
   @Transform(dateTransformer)

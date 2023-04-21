@@ -6,7 +6,7 @@ import { jwtConstants } from 'src/modules/auth/auth.constants';
 import { JwtPayload } from 'src/modules/auth/strategies/jwt.payload';
 import { UserService } from 'src/modules/user/users.service';
 import { UserStatus } from 'src/shares/enums/user.enum';
-import { httpErrors } from 'src/shares/exceptions';
+import { ERROR_MESSAGE_CODE } from 'src/shares/constant';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -21,11 +21,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   async validate(payload: JwtPayload): Promise<UserEntity> {
     const user = await this.userService.findUserById(payload.userId);
     if (!user) {
-      throw new HttpException(httpErrors.UNAUTHORIZED, HttpStatus.UNAUTHORIZED);
+      throw new HttpException(ERROR_MESSAGE_CODE.UNAUTHORIZED, HttpStatus.UNAUTHORIZED);
     }
 
     if (user.status == UserStatus.LOCKED) {
-      throw new HttpException(httpErrors.LOCKED_USER, HttpStatus.FORBIDDEN);
+      throw new HttpException(ERROR_MESSAGE_CODE.LOCKED_USER, HttpStatus.FORBIDDEN);
     }
 
     return user;

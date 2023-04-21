@@ -9,7 +9,7 @@ import { RefreshAccessTokenDto } from 'src/modules/auth/dto/refresh-access-token
 import { ResponseLogin } from 'src/modules/auth/dto/response-login.dto';
 import { JwtPayload } from 'src/modules/auth/strategies/jwt.payload';
 import { UserService } from 'src/modules/user/users.service';
-import { httpErrors } from 'src/shares/exceptions';
+import { ERROR_MESSAGE_CODE } from 'src/shares/constant';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
@@ -24,7 +24,7 @@ export class AuthService {
     let user: UserEntity;
 
     if (!(await this.userService.checkUserEmailAddressExisted(loginDto.email))) {
-      throw new HttpException(httpErrors.ACCOUNT_EXISTED, HttpStatus.UNAUTHORIZED);
+      throw new HttpException(ERROR_MESSAGE_CODE.ACCOUNT_EXISTED, HttpStatus.UNAUTHORIZED);
     } else {
       user = await this.userService.findUserByEmailAddress(loginDto.email);
     }
@@ -45,7 +45,7 @@ export class AuthService {
   async refreshAccessToken(refreshAccessTokenDto: RefreshAccessTokenDto): Promise<ResponseLogin> {
     const { refreshToken, accessToken } = refreshAccessTokenDto;
     const oldHashAccessToken = await this.cacheManager.get<string>(`${AUTH_CACHE_PREFIX}${refreshToken}`);
-    if (!oldHashAccessToken) throw new HttpException(httpErrors.REFRESH_TOKEN_EXPIRED, HttpStatus.BAD_REQUEST);
+    if (!oldHashAccessToken) throw new HttpException(ERROR_MESSAGE_CODE.REFRESH_TOKEN_EXPIRED, HttpStatus.BAD_REQUEST);
 
     const hashAccessToken = createHash('sha256').update(accessToken).digest('hex');
     if (hashAccessToken == oldHashAccessToken) {
@@ -59,7 +59,7 @@ export class AuthService {
         ...newAccessToken,
         ...newRefreshToken,
       };
-    } else throw new HttpException(httpErrors.REFRESH_TOKEN_EXPIRED, HttpStatus.BAD_REQUEST);
+    } else throw new HttpException(ERROR_MESSAGE_CODE.REFRESH_TOKEN_EXPIRED, HttpStatus.BAD_REQUEST);
   }
 
   generateAccessToken(payload: JwtPayload): { accessToken: string } {

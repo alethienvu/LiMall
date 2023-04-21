@@ -1,10 +1,10 @@
 import { Logger, Module } from '@nestjs/common';
-import { UserController } from 'src/modules/user/users.controller';
-import { UserService } from 'src/modules/user/users.service';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from 'src/modules/auth/auth.constants';
 import { MailModule } from 'src/modules/mail/mail.module';
-import { UserRepository } from './user.repository';
+import { AdminController } from './admins.controller';
+import { AdminService } from './admins.service';
+import { UsersModule } from '../user/users.module';
 
 @Module({
   imports: [
@@ -14,9 +14,10 @@ import { UserRepository } from './user.repository';
       signOptions: { expiresIn: jwtConstants.accessTokenExpiry },
     }),
     MailModule,
+    UsersModule,
   ],
-  providers: [UserService, Logger, UserRepository],
-  exports: [UserService, UserRepository],
-  controllers: [UserController],
+  providers: [AdminService, Logger],
+  exports: [AdminService],
+  controllers: [AdminController],
 })
-export class UsersModule {}
+export class AdminsModule {}

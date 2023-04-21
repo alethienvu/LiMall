@@ -1,8 +1,10 @@
 import { createParamDecorator, ExecutionContext, HttpException, HttpStatus } from '@nestjs/common';
 import jwtDecode from 'jwt-decode';
 import { JwtPayload } from 'src/modules/auth/strategies/jwt.payload';
-import { httpErrors } from 'src/shares/exceptions';
-
+import { ERROR_MESSAGE_CODE } from 'src/shares/constant';
+/**
+ * This decorator get userId from headers
+ */
 export const UserID = createParamDecorator((data: string, ctx: ExecutionContext) => {
   const request = ctx.switchToHttp().getRequest();
   try {
@@ -10,6 +12,6 @@ export const UserID = createParamDecorator((data: string, ctx: ExecutionContext)
     const payload: JwtPayload = jwtDecode(token);
     return payload.userId;
   } catch (e) {
-    throw new HttpException(httpErrors.UNAUTHORIZED, HttpStatus.BAD_REQUEST);
+    throw new HttpException(ERROR_MESSAGE_CODE.UNAUTHORIZED, HttpStatus.BAD_REQUEST);
   }
 });

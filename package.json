@@ -26,8 +26,7 @@
     "typeorm:revert": "npm run typeorm migration:revert",
     "typeorm:create": "npm run typeorm migration:create -- -n",
     "console:dev": "ts-node -r tsconfig-paths/register src/console.ts",
-    "console": "node dist/console.js",
-    "crypto": "^1.0.1"
+    "console": "node dist/console.js"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "1.6.0",

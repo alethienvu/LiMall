@@ -1,4 +1,4 @@
-import { CACHE_MANAGER, HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, CACHE_MANAGER, HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Cache } from 'cache-manager';
 import { createHash } from 'crypto';
@@ -11,6 +11,7 @@ import { JwtPayload } from 'src/modules/auth/strategies/jwt.payload';
 import { UserService } from 'src/modules/user/users.service';
 import { ERROR_MESSAGE_CODE } from 'src/shares/constant';
 import { v4 as uuidv4 } from 'uuid';
+import * as crypto from 'crypto';
 
 @Injectable()
 export class AuthService {
@@ -27,6 +28,12 @@ export class AuthService {
       throw new HttpException(ERROR_MESSAGE_CODE.ACCOUNT_EXISTED, HttpStatus.UNAUTHORIZED);
     } else {
       user = await this.userService.findUserByEmailAddress(loginDto.email);
+    }
+
+    const compare_pass = crypto.createHmac('sha256', loginDto.password).digest('hex');
+    const { password: savedPass } = await this.userService.findUserById(user?.id);
+    if (compare_pass !== savedPass) {
+      throw new BadRequestException(`Wrong password`);
     }
 
     const accessToken = this.generateAccessToken({ userId: user.id, role: user.role });
